@@ -1,0 +1,67 @@
+//out:false, main:../index.less
+
+body {
+    height: 100vh;
+
+
+}
+
+// #labyrinthCanvas {
+//     margin: 0% 20%;
+//     border: black solid 1px;
+// }
+
+table {
+    border-collapse: collapse;
+    // border: 1px solid black;
+
+    &:focus {
+        caret-color: transparent;
+    }
+}
+
+.disableCaret {
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+}
+
+table:hover {
+    cursor: crosshair;
+}
+
+table td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+table td {
+    //
+}
+
+td.active {
+    border: 2px solid red;
+    background-color: green;
+}
+
+td.marked {
+    border: red dashed 2px !important;
+    background-color: green;
+}
+
+td {
+    height: 0;
+
+    &:after,
+    &:before {
+        content: '';
+
+        display: block;
+        padding-bottom: calc(50% - 0.5em);
+    }
+}
