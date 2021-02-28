@@ -8857,3 +8857,9 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
 [0m2021.02.24 15:23:21 INFO  time: code lens generation in 3.59s[0m
 [0m2021.02.24 15:23:21 INFO  time: code lens generation in 2.2s[0m
 [0m2021.02.24 15:25:14 WARN  no build target for: C:\home\scala\Projects\Labyrinth\labyrinth\app\controllers\LabyrinthController.scala[0m
+Feb. 24, 2021 3:58:02 NACHM. org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 14
+[0m2021.02.26 14:44:52 INFO  Started: Metals version 0.10.0 in workspace 'C:\home\scala\Projects\Labyrinth\labyrinth' for client vscode 1.53.2.[0m
+[0m2021.02.26 14:44:54 INFO  time: initialize in 1.25s[0m
+[0m2021.02.26 14:44:58 WARN  Build server is not auto-connectable.[0m
+[0m2021.02.26 14:44:58 INFO  skipping build import with status 'Requested'[0m
