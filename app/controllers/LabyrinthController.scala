@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject._
 import play.api.mvc._
-import play.api.i18n._
+//import play.api.i18n._
 
 import scala.util.Random
 
@@ -16,8 +16,8 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
 
     Random.shuffle(x ++ y)
   }
-  def drawLabyrinth = Action {
+  def drawLabyrinth: Action[AnyContent] = Action {
     Ok(views.html.labyrinthView())
   }
-  def drawCells() = TODO
+  def drawCells(): Action[AnyContent] = TODO
 }
