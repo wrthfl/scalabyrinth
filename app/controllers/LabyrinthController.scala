@@ -9,9 +9,9 @@ import play.api.data.Forms._
 import play.api.Logger
 import scala.util.Random
 
-object cell {
-  // def id: Int
-  var field: Int = 0
+class cell{
+  //def id: Int
+  var field:Int = 0
   // def top: Boolean = true
   var bot: Boolean = true
   var left: Boolean = true
@@ -33,14 +33,17 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   def getForm(size: String) = Action {
     // val sizeasint = size.toInt
     // Ok(s"$size größe")
-    Redirect(routes.LabyrinthController.drawLabyrinth(size.toInt))
+    Redirect(routes.LabyrinthController.drawLabyrinth())
   }
 
   def generateMaze(size: Int): List[cell] = {
     var res: List[cell] = List[cell]()
-    for (i <- 1 to size + 1) {
-      val defaultCell = new cell {
-        override def field: Int = i
+    for(i<-1 to size+1){
+      val defaultCell = new cell{
+        field = i
+        bot = true
+        left = true
+        right = true
       }
       for (k <- 0 to size) {
         var row = List.fill(size)(defaultCell)
@@ -66,8 +69,8 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
 
   def carveFields(row: List[cell]): List[cell] = {
     val len = row.length
-    var fieldnumber = Random.nextInt(len / 2)
-    var fields = genFields(row, fieldnumber)
+    val fieldnumber = Random.nextInt(len/2)
+    var fields = genFields(row,fieldnumber)
     var res = List[cell]()
     for (field <- fields) {
       for (i <- 0 to field.length) {
@@ -84,6 +87,7 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
       res ::: field
     }
 
+    res
   }
 
 }
