@@ -9,10 +9,8 @@ import play.api.data.Forms._
 import play.api.Logger
 import scala.util.Random
 
-class cell{
-  //def id: Int
+trait cell{
   var field:Int = 0
-  // def top: Boolean = true
   var bot: Boolean = true
   var left: Boolean = true
   var right: Boolean = true
@@ -23,33 +21,33 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
     extends AbstractController(cc) {
 
   def showFormOnly = Action {
-    Ok(views.html.labyrinthView(0))
+    Ok(views.html.labyrinthView(size = 0, labyrinth = List.empty))
   }
+
   def drawLabyrinth(size: Int) = Action {
-    // val sizeasint = size.toInt
     val labyrinth = generateMaze(size)
     Ok(views.html.labyrinthView(size, labyrinth))
   }
+
   def getForm(size: String) = Action {
-    // val sizeasint = size.toInt
-    // Ok(s"$size größe")
     Redirect(routes.LabyrinthController.drawLabyrinth(size.toInt))
   }
 
   def generateMaze(size: Int): List[cell] = {
-    var res: List[cell] = List[cell]()
-    for(i<-1 to size+1){
-      val defaultCell = new cell{
-        field = i
-        bot = true
-        left = true
-        right = true
+    var res: List[cell] = List[cell]().empty
+    var row: List[cell] = List[cell]().empty
+    for(i<-0 to size){
+      for (k <- 1 to size+1) {
+        val newCell = new cell{
+          field = k
+          bot = true
+          left = true
+          right = true
+        }
+        row = row.appended(newCell)
       }
-      for (k <- 0 to size) {
-        var row = List.fill(size)(defaultCell)
-        row = carveFields(row)
-        res = res.++(row)
-      }
+      row = carveFields(row)
+      res = res.appended(row)
     }
     res
   }
@@ -69,8 +67,8 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
 
   def carveFields(row: List[cell]): List[cell] = {
     val len = row.length
-    val fieldnumber = Random.nextInt(len/2)
-    var fields = genFields(row,fieldnumber)
+    val fieldNumber = Random.nextInt(len/2)
+    var fields = genFields(row,fieldNumber)
     var res = List[cell]()
     for (field <- fields) {
       for (i <- 0 to field.length-1) {
@@ -79,22 +77,14 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         c.field = i
         val len = field.length
         i match {
-          case 0            => c.right = false
+          case 0      => c.right = false
           case  `len` => c.left = false
-          case _            => (c.left = false, c.right = false)
+          case _      => (c.left = false, c.right = false)
         }
       }
       field(Random.nextInt(field.length)).bot = false;
       res ::: field
     }
-
     res
   }
-
 }
-// object Labyrinth extends Controller {
-
-//   val labyrinthData = mapping("size"->number.verifying(min(10),max(100))
-//   )
-//   (Labyrinth.apply)(Labyrinth.unapply)
-// }
