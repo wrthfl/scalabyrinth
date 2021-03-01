@@ -12,7 +12,6 @@ import scala.util.Random
 class Cell{
   //def id: Int
   var field:Int = 0
-  // def top: Boolean = true
   var bot: Boolean = true
   var left: Boolean = true
   var right: Boolean = true
@@ -26,14 +25,13 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   def showFormOnly = Action {
     Redirect(routes.LabyrinthController.drawLabyrinth(10))
   }
+
   def drawLabyrinth(size: Int) = Action {
-    // val sizeasint = size.toInt
     val labyrinth = generateMaze(size)
     Ok(views.html.labyrinthView(size, labyrinth))// List.fill(size*size)(cell)))
   }
+
   def getForm(size: String) = Action {
-    // val sizeasint = size.toInt
-    // Ok(s"$size größe")
     Redirect(routes.LabyrinthController.drawLabyrinth(size.toInt))
   }
 
@@ -51,6 +49,8 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         row = carveFields(row)
         res = res ++ row
       }
+      row = carveFields(row)
+      res = res.appended(row)
     }
     
     res
@@ -81,22 +81,14 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         c.field = i
         val len = field.length
         i match {
-          case 0            => c.right = false
+          case 0      => c.right = false
           case  `len` => c.left = false
-          case _            => (c.left = false, c.right = false)
+          case _      => (c.left = false, c.right = false)
         }
       }
       field(Random.nextInt(field.length)).bot = false;
       res =res ++ field
     }
-
     res
   }
-
 }
-// object Labyrinth extends Controller {
-
-//   val labyrinthData = mapping("size"->number.verifying(min(10),max(100))
-//   )
-//   (Labyrinth.apply)(Labyrinth.unapply)
-// }
