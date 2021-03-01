@@ -1,6 +1,6 @@
 @* labyrinth template file *@
 
-@(size:Int, labyrinth:List[Cell])
+@(size:Int, labyrinth:List[Cell], bot:String="",left:String="",right:String="")
 
 @main("Labyrinth"){
     <h2 class="ml-5 p-5"> Labyrinth </h2>
@@ -25,11 +25,19 @@
         @if(size!=0){
         <table id="labyrinthGrid" class="disableCaret">
             <tbody>
-                @for(i<- 1 to size-1){
+                @for(i<- 1 to size){
                 <tr>
-                    @for(j<- 1 to size-1){
-                        
-                    <td class="">
+                    @for(j<- 1 to size){
+                        @if(labyrinth.bot){
+                            top = "bot"
+                        }
+                        @if(labyrinth.left){
+                            top = "left"
+                        }
+                        @if(labyrinth.right){
+                            top = "right"
+                        }
+                    <td class="@bot @right @left">
                     
                         @labyrinth(i*j).field
                     

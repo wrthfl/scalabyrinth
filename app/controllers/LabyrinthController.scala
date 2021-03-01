@@ -49,8 +49,6 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         row = carveFields(row)
         res = res ++ row
       }
-      // row = carveFields(row)
-      // res = res.appended(row)
     }
     
     res
