@@ -6,8 +6,9 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index()
 
-GET     /Labyrinth/getForm                  controllers.LabyrinthController.getForm(size:String)
+GET     /getForm                  controllers.LabyrinthController.drawLabyrinth(size:Int)
 GET     /Labyrinth/:size                 controllers.LabyrinthController.drawLabyrinth(size:Int)
+GET     /Labyrinth/getForm                 controllers.LabyrinthController.drawLabyrinth(size:Int)
 GET     /Labyrinth                  controllers.LabyrinthController.showFormOnly
 
 

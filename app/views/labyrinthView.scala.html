@@ -7,7 +7,7 @@
     <div class="d-flex flex-row w-90 h-75 mx-auto mt-5 ">
         <div class="d-flex flex-column w-25 align-items-center">
             <form method="get" action="getForm">
-                <label for="size">Labyrinthgröße: <span id="gridSize">50</span></label>
+                <label for="size">Labyrinthgröße: <span id="gridSize">@size</span></label>
                 <input type="range" name="size" id="size" defaultValue="10" min="4" max="20" list="gridSizeSteps" >
                 <datalist id="gridSizeSteps">
                     @for(o<-4 to 20 by 1){
@@ -22,7 +22,6 @@
                 </div>
             </form>
         </div>
-        <div>@size</div>
         @if(size!=0){
         <table id="labyrinthGrid" class="disableCaret">
             <tbody>
