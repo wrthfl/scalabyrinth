@@ -1,7 +1,7 @@
 const d = document
 
 let gridSizeSpan = d.getElementById("gridSize")
-let gridCellSizeInput = d.getElementById("gridCellSize")
+let gridCellSizeInput = d.getElementById("size")
 
 gridCellSizeInput.addEventListener("input", function (e) {
 

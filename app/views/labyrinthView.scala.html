@@ -1,13 +1,13 @@
 @* labyrinth template file *@
 
-
+@(size:Int)
 @main("Labyrinth"){
     <h2 class="ml-5 p-5"> Labyrinth </h2>
     <div class="d-flex flex-row w-90 h-75 mx-auto mt-5 ">
         <div class="d-flex flex-column w-25 align-items-center">
-            <form action="">
-                <label for="gridCellSize">Labyrinthgröße: <span id="gridSize">50</span></label>
-                <input type="range" name="gridCellSize" id="gridCellSize" defaultValue="20" min="10" max="100" list="gridSizeSteps">
+            <form method="get" action="getForm">
+                <label for="size">Labyrinthgröße: <span id="gridSize">50</span></label>
+                <input type="range" name="size" id="size" defaultValue="20" min="10" max="100" list="gridSizeSteps" >
                 <datalist id="gridSizeSteps">
                     @for(o<-10 to 100 by 1){
                         @if(o%10==0){
@@ -15,56 +15,26 @@
                         }
                     }
                 </datalist>
-                <label for="difficulty"></label>
-                <input type="range" name="difficulty" id="difficulty" list="difficultySteps" min="0" max="100" defaultValue="50">
-                <datalist id="difficultySteps">
-                    @for(o<-0 to 100 by 1){
-                        @o match{
-                            case 0 => {<option value="@o" label="Easy"></option>}
-                            case 50 => {<option value="@o" label="Medium"></option>}
-                            case 100 => {<option value="@o" label="Hard"></option>}
-                            case _ => {}
-                        }                    
-                    }
-                </datalist>
+                
                 <div class="d-flex justify-content-center">
                     <input class="mt-5" type="submit" value="Start">
                 </div>
             </form>
         </div>
-        <div class="w-75">
-            @* <canvas id="labyrinthCanvas" width="500px" height="500px">
-                Unfortunately your browser does not support html5 canvas. :(
-                </canvas> *@
-            <table id="labyrinthGrid" class="disableCaret">
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>6</td>
-      <td>7</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td>10</td>
-      <td>11</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <td>13</td>
-      <td>14</td>
-      <td>15</td>
-      <td>16</td>
-    </tr>
-  </tbody>
-</table>
-
-        </div>
+        <div>@size</div>
+        @if(size!=0){
+        <table id="labyrinthGrid" class="disableCaret">
+            <tbody>
+                @for(i<- 0 to size){
+                <tr>
+                    @for(j<- 0 to size){
+                    <td>@i,@j</td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+        }
     </div>
+</div>
 }
