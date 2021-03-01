@@ -33,7 +33,7 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   def getForm(size: String) = Action {
     // val sizeasint = size.toInt
     // Ok(s"$size größe")
-    Redirect(routes.LabyrinthController.drawLabyrinth())
+    Redirect(routes.LabyrinthController.drawLabyrinth(size.toInt))
   }
 
   def generateMaze(size: Int): List[cell] = {
@@ -59,7 +59,7 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
     else if (chunks == 1) List(list)
     else {
       val avg = list.size / chunks
-      val rand = (1.0 + Random.nextGaussian / 3) * avg
+      val rand = (1.0 + Random.nextGaussian() / 3) * avg
       val index = (rand.toInt max 1) min (list.size - chunks)
       val (h, t) = list splitAt index
       h +: genFields(t, chunks - 1)
@@ -73,13 +73,14 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
     var fields = genFields(row,fieldnumber)
     var res = List[cell]()
     for (field <- fields) {
-      for (i <- 0 to field.length) {
+      for (i <- 0 to field.length-1) {
         var c = field(i)
         f(c)
         c.field = i
+        val len = field.length
         i match {
           case 0            => c.right = false
-          case field.length => c.left = false
+          case  `len` => c.left = false
           case _            => (c.left = false, c.right = false)
         }
       }
