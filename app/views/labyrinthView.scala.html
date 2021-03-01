@@ -1,16 +1,17 @@
 @* labyrinth template file *@
 
-@(size:Int)
+@(size:Int, labyrinth:List[cell]=null)
+
 @main("Labyrinth"){
     <h2 class="ml-5 p-5"> Labyrinth </h2>
     <div class="d-flex flex-row w-90 h-75 mx-auto mt-5 ">
         <div class="d-flex flex-column w-25 align-items-center">
             <form method="get" action="getForm">
                 <label for="size">Labyrinthgröße: <span id="gridSize">50</span></label>
-                <input type="range" name="size" id="size" defaultValue="20" min="10" max="100" list="gridSizeSteps" >
+                <input type="range" name="size" id="size" defaultValue="10" min="4" max="20" list="gridSizeSteps" >
                 <datalist id="gridSizeSteps">
-                    @for(o<-10 to 100 by 1){
-                        @if(o%10==0){
+                    @for(o<-4 to 20 by 1){
+                        @if(o%2==0){
                             <option value="@o" label="@o"></option>
                         }
                     }
