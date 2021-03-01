@@ -9,7 +9,7 @@ import play.api.data.Forms._
 import play.api.Logger
 import scala.util.Random
 
-class cell{
+class Cell{
   //def id: Int
   var field:Int = 0
   // def top: Boolean = true
@@ -21,14 +21,15 @@ class cell{
 @Singleton
 class LabyrinthController @Inject() (cc: ControllerComponents)
     extends AbstractController(cc) {
+      val logger:Logger = Logger(this.getClass)
 
   def showFormOnly = Action {
-    Ok(views.html.labyrinthView(0))
+    Redirect(routes.LabyrinthController.drawLabyrinth(10))
   }
   def drawLabyrinth(size: Int) = Action {
     // val sizeasint = size.toInt
     val labyrinth = generateMaze(size)
-    Ok(views.html.labyrinthView(size, labyrinth))
+    Ok(views.html.labyrinthView(size, labyrinth))// List.fill(size*size)(cell)))
   }
   def getForm(size: String) = Action {
     // val sizeasint = size.toInt
@@ -36,10 +37,10 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
     Redirect(routes.LabyrinthController.drawLabyrinth(size.toInt))
   }
 
-  def generateMaze(size: Int): List[cell] = {
-    var res: List[cell] = List[cell]()
+  def generateMaze(size: Int): List[Cell] = {
+    var res: List[Cell] = List.empty
     for(i<-1 to size+1){
-      val defaultCell = new cell{
+      val defaultCell = new Cell{
         field = i
         bot = true
         left = true
@@ -48,13 +49,14 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
       for (k <- 0 to size) {
         var row = List.fill(size)(defaultCell)
         row = carveFields(row)
-        res = res.++(row)
+        res = res ++ row
       }
     }
+    
     res
   }
 
-  def genFields[cell](list: List[cell], chunks: Int): List[List[cell]] = {
+  def genFields[Cell](list: List[Cell], chunks: Int): List[List[Cell]] = {
     if (chunks == 0) Nil
     else if (chunks == 1) List(list)
     else {
@@ -67,11 +69,11 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   }
   def f[T](v: T) = v
 
-  def carveFields(row: List[cell]): List[cell] = {
+  def carveFields(row: List[Cell]): List[Cell] = {
     val len = row.length
     val fieldnumber = Random.nextInt(len/2)
     var fields = genFields(row,fieldnumber)
-    var res = List[cell]()
+    var res = List[Cell]()
     for (field <- fields) {
       for (i <- 0 to field.length-1) {
         var c = field(i)
@@ -85,7 +87,7 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         }
       }
       field(Random.nextInt(field.length)).bot = false;
-      res ::: field
+      res =res ++ field
     }
 
     res
