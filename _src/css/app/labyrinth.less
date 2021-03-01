@@ -36,13 +36,27 @@ table:hover {
 
 table td {
     font-size: xx-small;
-    border: 1px solid black;
+    border: 1px solid white;
     padding: 3px 2px;
     text-align: center;
 }
 
-table td {
-    //
+table {
+    .top {
+        border-top: 1px solid black;
+    }
+
+    .bot {
+        border-bottom: 1px solid black;
+    }
+
+    .left {
+        border-left: 1px solid black;
+    }
+
+    .right {
+        border-right: 1px solid black;
+    }
 }
 
 td.active {
