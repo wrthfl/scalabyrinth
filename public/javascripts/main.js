@@ -24,20 +24,20 @@ function markCell(cell) {
 }
 
 // d.getElementById("labyrinthGrid").addEventListener("click",)
-d.querySelectorAll("#labyrinthGrid td").forEach(e => e.addEventListener("contextmenu", function (e) {
-    e.preventDefault()
-    console.log(e.target)
-    active = e.target
-    d.querySelectorAll("#labyrinthGrid td").forEach(el => el.classList.remove("marked"))
-    e.target.classList.toggle("marked")
-}))
+// d.querySelectorAll("#labyrinthGrid td").forEach(e => e.addEventListener("contextmenu", function (e) {
+//     e.preventDefault()
+//     console.log(e.target)
+//     active = e.target
+//     d.querySelectorAll("#labyrinthGrid td").forEach(el => el.classList.remove("marked"))
+//     e.target.classList.toggle("marked")
+// }))
 
-d.querySelectorAll("#labyrinthGrid td").forEach(e => e.addEventListener("click", function (e) {
-    console.log(e.target)
-    active = e.target
-    d.querySelectorAll("#labyrinthGrid td").forEach(el => el.classList.remove("active"))
-    e.target.classList.toggle("active")
-}))
+// d.querySelectorAll("#labyrinthGrid td").forEach(e => e.addEventListener("click", function (e) {
+//     console.log(e.target)
+//     active = e.target
+//     d.querySelectorAll("#labyrinthGrid td").forEach(el => el.classList.remove("active"))
+//     e.target.classList.toggle("active")
+// }))
 
 var active;
 const table = d.getElementById("labyrinthGrid")

@@ -8,19 +8,19 @@ import play.api.data.Forms._
 //import play.api.i18n._
 import play.api.Logger
 import scala.util.Random
-
-class Cell{
+import scala.collection._
+trait cell {
   //def id: Int
-  var field:Int = 0
-  var bot: Boolean = true
-  var left: Boolean = true
-  var right: Boolean = true
+  var field: Int = 0
+  var bot: String = ""
+  var left: String = ""
+  var right: String = ""
 }
 
 @Singleton
 class LabyrinthController @Inject() (cc: ControllerComponents)
     extends AbstractController(cc) {
-      val logger:Logger = Logger(this.getClass)
+  val logger: Logger = Logger(this.getClass)
 
   def showFormOnly = Action {
     Redirect(routes.LabyrinthController.drawLabyrinth(10))
@@ -28,65 +28,89 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
 
   def drawLabyrinth(size: Int) = Action {
     val labyrinth = generateMaze(size)
-    Ok(views.html.labyrinthView(size, labyrinth))// List.fill(size*size)(cell)))
+    Ok(
+      views.html.labyrinthView(size, labyrinth)
+    ) // List.fill(size*size)(cell)))
   }
 
   def getForm(size: String) = Action {
     Redirect(routes.LabyrinthController.drawLabyrinth(size.toInt))
   }
 
-  def generateMaze(size: Int): List[Cell] = {
-    var res: List[Cell] = List.empty
-    for(i<-1 to size+1){
-      val defaultCell = new Cell{
-        field = i
-        bot = true
-        left = true
-        right = true
+  def generateMaze(size: Int): List[cell] = {
+    var res: List[cell] = List[cell]()
+    var row: List[cell] = List[cell]()
+    for (i <- 1 to size -1) {
+      for (k <- 1 to size - 1) {
+        val newCell = new cell {
+          // field = (i * size + k)
+          bot = ""
+          left = ""
+          right = ""
+        }
+        row :+= newCell
       }
-      for (k <- 0 to size) {
-        var row = List.fill(size)(defaultCell)
-        row = carveFields(row)
-        res = res ++ row
-      }
+      row = carveFields(row)
+      res = res ++ row
     }
-    
-    res
+    res.tail
   }
 
-  def genFields[Cell](list: List[Cell], chunks: Int): List[List[Cell]] = {
-    if (chunks == 0) Nil
+  def genFields[cell](list: List[cell], chunks: Int): List[List[cell]] = {
+    if (chunks == 0) List()
     else if (chunks == 1) List(list)
     else {
-      val avg = list.size / chunks
-      val rand = (1.0 + Random.nextGaussian() / 3) * avg
-      val index = (rand.toInt max 1) min (list.size - chunks)
+      // val avg = list.size / chunks
+      // val rand = (1.0 + Random.nextGaussian() / 3) * avg
+      val index = 1 + Random.nextInt(list.size / chunks)
       val (h, t) = list splitAt index
       h +: genFields(t, chunks - 1)
     }
   }
   def f[T](v: T) = v
 
-  def carveFields(row: List[Cell]): List[Cell] = {
+  def carveFields(row: List[cell]): List[cell] = {
     val len = row.length
-    val fieldnumber = Random.nextInt(len/2)
-    var fields = genFields(row,fieldnumber)
-    var res = List[Cell]()
-    for (field <- fields) {
-      for (i <- 0 to field.length-1) {
-        var c = field(i)
-        f(c)
-        c.field = i
-        val len = field.length
-        i match {
-          case 0      => c.right = false
-          case  `len` => c.left = false
-          case _      => (c.left = false, c.right = false)
+    // var l = List.empty ++= row
+
+    var start = len / 2 - len / 5
+    var end = len / 2 + 1
+    var rnd = start + Random.nextInt((end - start) + 1)
+    var fieldCol = genFields(row, rnd)
+
+    var res = List[cell]()
+    for (fields <- fieldCol) {
+      var fieldId = fields(0).field
+      var field = List[cell]()
+      if (fields.size == 1) {
+        fields(0).bot = "bot"
+        field = field :++ fields
+      } else if (fields.size == 2) {
+        fields(0).right = "right"
+        fields(1).left = "left"
+        fields(1).field = fieldId
+        fields(Random.nextInt(2)).bot = "bot"
+        field = field :++ fields
+      } else {
+        var middle = fields.tail.take(row.size - 2)
+        for (cell <- middle) {
+          cell.left = "left"
+          cell.right = "right"
+          cell.field = fieldId
         }
+        var head = fields.head
+        head.right = "right"
+        head.field = fieldId
+        var last = fields.reverse.take(1)
+        last(0).left = "left"
+        last(0).field = fieldId
+
+        field = field :+ head :++ middle :++ last
+        field(Random.nextInt(field.size)).bot = "bot"
       }
-      field(Random.nextInt(field.length)).bot = false;
-      res =res ++ field
+
+      res = res :++ field
     }
-    res
+    res.toList
   }
 }
