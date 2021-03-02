@@ -9,8 +9,8 @@ import play.api.data.Forms._
 import play.api.Logger
 import scala.util.Random
 import scala.collection._
-trait cell {
-  //def id: Int
+class cell {
+  var id: Int = 0
   var field: Int = 0
   var bot: String = ""
   var left: String = ""
@@ -38,22 +38,32 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   }
 
   def generateMaze(size: Int): List[cell] = {
-    var res: List[cell] = List[cell]()
-    var row: List[cell] = List[cell]()
-    for (i <- 1 to size -1) {
-      for (k <- 1 to size - 1) {
-        val newCell = new cell {
-          // field = (i * size + k)
-          bot = ""
-          left = ""
-          right = ""
-        }
-        row :+= newCell
-      }
-      row = carveFields(row)
-      res = res ++ row
+    // var res: List[cell] = List[cell]()
+    // var row: List[cell] = List[cell]()
+    // var cellcounter = 0;
+    
+    // for (i <- 1 to size -1) {
+    //   for (k <- 1 to size - 1) {
+    //     val newCell = new cell {
+    //       id = cellcounter
+    //       field = (i * size + k)
+    //       bot = ""
+    //       left = ""
+    //       right = ""
+    //     }
+    //     cellcounter +=1
+    //     row :+= newCell
+    //   }
+    //   row = carveFields(row)
+    //   res = res ++ row
+    // }
+    // res.tail
+    var res:List[cell] = List[cell]()
+    var lab: List[List[cell]] = List.fill(size)(List.fill(size)(new cell))
+    for(row<-lab){
+      res = res :++ carveFields(row)
     }
-    res.tail
+    res    
   }
 
   def genFields[cell](list: List[cell], chunks: Int): List[List[cell]] = {
