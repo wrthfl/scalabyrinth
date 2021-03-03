@@ -3,7 +3,6 @@
 body {
     height: 100vh;
 
-
 }
 
 // #labyrinthCanvas {
@@ -18,6 +17,10 @@ table {
     &:focus {
         caret-color: transparent;
     }
+
+    position: absolute;
+    margin-left: 25vw;
+    margin-top: -15vh;
 }
 
 .disableCaret {
@@ -43,7 +46,26 @@ table td {
 
 table td:first-child {
     border-left: 1px solid black;
+
+
 }
+
+table tr:last-child {
+    td:last-child {
+        background-color: red;
+    }
+
+    td {
+        border-bottom: 1px solid black;
+    }
+}
+
+table tr:first-child {
+    td:first-child {
+        background-color: green;
+    }
+}
+
 
 table td:last-child {
     border-right: 1px solid black;
