@@ -8,7 +8,7 @@
         <div class="d-flex flex-column w-25 align-items-center">
             <form method="get" action="getForm">
                 <label for="size">Labyrinthgröße: <span id="gridSize">@size</span></label>
-                <input type="range" name="size" id="size" defaultValue="10" min="4" max="20" list="gridSizeSteps" >
+                <input type="range" name="size" id="size" defaultValue="10" min="4" max="20" list="gridSizeSteps">
                 <datalist id="gridSizeSteps">
                     @for(o<-4 to 20 by 1){
                         @if(o%2==0){
@@ -16,7 +16,6 @@
                         }
                     }
                 </datalist>
-                
                 <div class="d-flex justify-content-center">
                     <input class="mt-5" type="submit" value="Start">
                 </div>
@@ -31,14 +30,12 @@
                         @defining(labyrinth(i*size+j).bot + " " + labyrinth(i*size+j).left + " " +labyrinth(i*size+j).right) { classlist =>
                             <td class="@classlist"></td>
                         }
-                        
                     }
                 </tr>
                 }
             </tbody>
         </table>
         }
-        
     </div>
 </div>
 }
