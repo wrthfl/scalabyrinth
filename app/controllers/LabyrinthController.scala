@@ -7,8 +7,7 @@ import scala.util.Random
 
 
 class cell {
-  var id: Int = 0
-  var field: Int = 0
+  var fieldID: Int = 0
   var bot: String = ""
   var left: String = ""
   var right: String = ""
@@ -38,19 +37,19 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
     for(row<-lab){
       res = res :++ carveFields(row)
     }
-    res    
+    res
   }
 
   def carveFields(row: List[cell]): List[cell] = {
     val len = row.length
     val start = len / 2 - len / 5
     val end = len / 2 + 1
-    val rnd = start + Random.nextInt((end - start) + 1)
+    val rnd = start + Random.nextInt(end - start)
     val fieldCol = genFields(row, rnd)
 
     var res = List[cell]()
     for (fields <- fieldCol) {
-      val fieldId = fields.head.field
+      val fieldId = fields.head.fieldID
       var field = List[cell]().empty
       if (fields.size == 1) {
         fields.head.bot = "bot"
@@ -58,7 +57,7 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
       } else if (fields.size == 2) {
         fields.head.right = "right"
         fields(1).left = "left"
-        fields(1).field = fieldId
+        fields(1).fieldID = fieldId
         fields(Random.nextInt(2)).bot = "bot"
         field = field :++ fields
       } else {
@@ -66,14 +65,14 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         for (cell <- center) {
           cell.left = "left"
           cell.right = "right"
-          cell.field = fieldId
+          cell.fieldID = fieldId
         }
         val head = fields.head
         head.right = "right"
-        head.field = fieldId
+        head.fieldID = fieldId
         val last = fields.reverse.head
         last.left = "left"
-        last.field = fieldId
+        last.fieldID = fieldId
         field = field :+ head :++ center :+ last
         field(Random.nextInt(field.size)).bot = "bot"
       }
