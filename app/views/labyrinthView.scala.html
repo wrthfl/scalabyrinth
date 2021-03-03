@@ -28,7 +28,7 @@
                 <tr>
                     @for(j<- 0 until size){
                         @defining(labyrinth(i*size+j).bot + " " + labyrinth(i*size+j).left + " " +labyrinth(i*size+j).right) { classlist =>
-                            <td class="@classlist">@labyrinth(i*size+j).field</td>
+                            <td class="@classlist">@labyrinth(i*size+j).fieldID</td>
                         }
                     }
                 </tr>
