@@ -33,19 +33,28 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   }
 
   def generateMaze(size: Int): List[cell] = {
-    var res:List[cell] = List[cell]()
-    val lab: List[List[cell]] = List.fill(size)(List.fill(size)(new cell))
+    var counter:Int = 0
+    var row: List[cell] = List.empty
+    var lab: List[List[cell]] = List.empty
+    for(i <- 0 until size){
+      for(k <- 1 to size){
+        counter = i * size + k
+        row = row :+ new cell{field = counter}
+      }
+      lab = lab :+ row
+    }
+    var res:List[cell] = List[cell]().empty
     for(row<-lab){
       res = res :++ carveFields(row)
     }
-    res    
+    res
   }
 
   def carveFields(row: List[cell]): List[cell] = {
     val len = row.length
     val start = len / 2 - len / 5
     val end = len / 2 + 1
-    val rnd = start + Random.nextInt((end - start) + 1)
+    val rnd = start + Random.nextInt((end - start))
     val fieldCol = genFields(row, rnd)
 
     var res = List[cell]()
