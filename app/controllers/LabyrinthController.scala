@@ -32,63 +32,14 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
   }
 
   def generateMaze(size: Int): List[cell] = {
-    var counter:Int = 0
-    var row: List[cell] = List.empty
-    var lab: List[List[cell]] = List.empty
-    for(i <- 0 until size){
-      for(k <- 1 to size){
-        counter = i * size + k
-        row = row :+ new cell{fieldID = counter}
-      }
-      lab = lab :+ row
-    }
-    var res:List[cell] = List[cell]().empty
+    var res:List[cell] = List[cell]()
+    val lab: List[List[cell]] = List.fill(size)(List.fill(size)(new cell))
     for(row<-lab){
       res = res :++ carveFields(row)
     }
     res
   }
 
-  // def carveFields(row: List[cell]): List[cell] = {
-  //   val len = row.length
-  //   val start = len / 2 - len / 5
-  //   val end = len / 2 + 1
-  //   val rnd = start + Random.nextInt(end - start)
-  //   val fieldCol = genFields(row, rnd)
-
-  //   var res = List[cell]()
-  //   for (fields <- fieldCol) {
-  //     val fieldId = fields.head.fieldID
-  //     var field = List[cell]().empty
-  //     if (fields.size == 1) {
-  //       fields.head.bot = "bot"
-  //       field = field :++ fields
-  //     } else if (fields.size == 2) {
-  //       fields.head.right = "right"
-  //       fields(1).left = "left"
-  //       fields(1).fieldID = fieldId
-  //       fields(Random.nextInt(2)).bot = "bot"
-  //       field = field :++ fields
-  //     } else {
-  //       val center = fields.tail.take(row.size - 2)
-  //       for (cell <- center) {
-  //         cell.left = "left"
-  //         cell.right = "right"
-  //         cell.fieldID = fieldId
-  //       }
-  //       val head = fields.head
-  //       head.right = "right"
-  //       head.fieldID = fieldId
-  //       val last = fields.reverse.head
-  //       last.left = "left"
-  //       last.fieldID = fieldId
-  //       field = field :+ head :++ center :+ last
-  //       field(Random.nextInt(field.size)).bot = "bot"
-  //     }
-  //     res = res :++ field
-  //   }
-  //   res
-  // }
   def carveFields(row: List[cell]): List[cell] = {
     val len = row.length
     val start = len / 2 - len / 5
@@ -109,7 +60,7 @@ class LabyrinthController @Inject() (cc: ControllerComponents)
         fields(1).fieldID = fieldId
         fields(Random.nextInt(2)).bot = "bot"
         field = field :++ fields
-} else {
+      } else {
         val center = fields.tail.take(row.size - 2)
         for (cell <- center) {
           cell.left = "left"
